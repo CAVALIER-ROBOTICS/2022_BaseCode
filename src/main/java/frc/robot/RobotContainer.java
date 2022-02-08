@@ -13,6 +13,7 @@ import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.ConditionalCommand;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
+import edu.wpi.first.wpilibj2.command.StartEndCommand;
 import edu.wpi.first.wpilibj2.command.SwerveControllerCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.commands.AimCommand;
@@ -66,8 +67,11 @@ public class RobotContainer {
     //       () -> modifyAxis(driver.getRawAxis(4)) * DriveTrainSubsystems.maxAngularVelocityPerSecond,
     //       driveSub
     //     ),
-    //     () -> driver.getRawButtonPressed(1));
-    // () -> ture;
+    //     () -> true);
+        // () -> driver.getRawButtonPressed(1));
+        
+
+    // driveSub.setDefaultCommand(driveCommand);
 
     //passes conditional command into the default command of drive
     driveSub.setDefaultCommand(new FieldDriveCommand
@@ -89,7 +93,8 @@ public class RobotContainer {
    * edu.wpi.first.wpilibj2.command.button.JoystickButton}.
    */
   private void configureButtonBindings() {
-    JoystickButton reset = new JoystickButton(driver, 2);
+    JoystickButton reset = new JoystickButton(driver, 4);
+    JoystickButton changeDrive = new JoystickButton(driver,2);
     // JoystickButton intake = new JoystickButton(driver, 3);
     // JoystickButton raise = new JoystickButton(driver, 6);
     // JoystickButton lower = new JoystickButton(driver, 5);
@@ -101,6 +106,14 @@ public class RobotContainer {
     // lower.whenPressed(new LowerCommand(intakeSub));
     // intake.whenActive(new IntakeCommand(driveSub, intakeSub));
     reset.whenPressed(new InstantCommand(driveSub::zeroGyroscope, driveSub));
+
+    changeDrive.toggleWhenPressed(new RobotDriveCommand(
+      () -> modifyAxis(driver.getRawAxis(1)) * DriveTrainSubsystems.maxVelocityPerSecond,
+      () -> modifyAxis(driver.getRawAxis(0)) * DriveTrainSubsystems.maxVelocityPerSecond,
+      () -> modifyAxis(driver.getRawAxis(2)) * DriveTrainSubsystems.maxAngularVelocityPerSecond,
+      driveSub
+    ));
+
   }
 
   /**

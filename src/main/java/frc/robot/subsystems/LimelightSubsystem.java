@@ -34,6 +34,11 @@ public class LimelightSubsystem extends SubsystemBase {
   }
 
   public void updateValues() {
+    tx = table.getEntry("tx");
+    ty = table.getEntry("ty");
+    ta = table.getEntry("ta");
+
+    //read values periodically
     x = tx.getDouble(0.0);
     y = ty.getDouble(0.0);
     area = ta.getDouble(0.0);
